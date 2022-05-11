@@ -995,6 +995,8 @@ public class LoanWritePlatformServiceJpaRepositoryImpl implements LoanWritePlatf
             }
             this.loanAccountDomainService.updateLoanCollateralTransaction(loanCollateralManagements);
         }
+        changes.put("status", loan.status());
+        changes.put("statusCode", loan.status().getValue());
 
         return commandProcessingResultBuilder.withCommandId(command.commandId()) //
                 .withLoanId(loanId) //
