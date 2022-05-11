@@ -30,13 +30,44 @@
         </encoder>
     </appender>
 
+
+	<appender name="RollingFile"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <!--    <file>${LOGS}/spring-boot-logger.log</file>-->
+  <!-- <file>/Users/nc23370_sandeep_kumar_soni/Documents/projects/java/fineract-provider-logs/fineract-provider.log</file>-->
+     <file>logs/fineract-provider.log</file>
+
+        <encoder
+            class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy
+            class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+             <fileNamePattern>logs/archived/fineract-provider-%d{yyyy-MM-dd}.%i.log
+          <!--  <fileNamePattern>/Users/nc23370_sandeep_kumar_soni/Documents/projects/java/fineract-provider-logs/archived/fineract-provider-%d{yyyy-MM-dd}.%i.log -->
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
     <!-- See https://github.com/apache/fineract/#logging-guidelines for why by default we log only to INFO, only (WARN and) ERROR
          but it's still possible to override this using java -Dlogging.level.root=info -jar fineract-provider.jar, as per https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-custom-log-levels -->
-    <root level="warn">
+    <root level="info">
         <appender-ref ref="CONSOLE" />
+		 <appender-ref ref="RollingFile" />
     </root>
+ <!--	<root level="debug">
+        <appender-ref ref="CONSOLE" />
+		 <appender-ref ref="RollingFile" />
+    </root>
+-->
 
-    <!-- But these two INFO are still handy ;-) just to see when it's up and running -->
+   
     <logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer" level="info" />
     <logger name="org.apache.fineract.ServerApplication" level="info" />
 </configuration>
