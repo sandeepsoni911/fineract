@@ -52,6 +52,7 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
             String accessKey = null;
             String bucketName = null;
             String secretKey = null;
+            String region = null;
             while (rs.next()) {
                 if (rs.getString("name").equalsIgnoreCase(ExternalServicesConstants.S3_ACCESS_KEY)) {
                     accessKey = rs.getString("value");
@@ -59,9 +60,11 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
                     bucketName = rs.getString("value");
                 } else if (rs.getString("name").equalsIgnoreCase(ExternalServicesConstants.S3_SECRET_KEY)) {
                     secretKey = rs.getString("value");
+                }else if (rs.getString("name").equalsIgnoreCase(ExternalServicesConstants.S3_REGION)) {
+                    region = rs.getString("value");
                 }
             }
-            return new S3CredentialsData(bucketName, accessKey, secretKey);
+            return new S3CredentialsData(bucketName, accessKey, secretKey, region);
         }
     }
 

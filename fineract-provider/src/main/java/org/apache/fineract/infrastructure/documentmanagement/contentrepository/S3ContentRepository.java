@@ -53,10 +53,12 @@ public class S3ContentRepository implements ContentRepository {
     private final String s3BucketName;
     private final AmazonS3 s3Client;
 
-    public S3ContentRepository(final String bucketName, final String secretKey, final String accessKey) {
+    public S3ContentRepository(final String bucketName, final String secretKey, final String accessKey, String region) {
         this.s3BucketName = bucketName;
         this.s3Client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey))).build();
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+                .withRegion(region)
+                .build();
     }
 
     @Override

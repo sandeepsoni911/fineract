@@ -23,11 +23,13 @@ public class S3CredentialsData {
     private final String bucketName;
     private final String accessKey;
     private final String secretKey;
+    private final String region;
 
-    public S3CredentialsData(final String bucketName, final String accessKey, final String secretKey) {
+    public S3CredentialsData(final String bucketName, final String accessKey, final String secretKey, final String region) {
         this.bucketName = bucketName;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
+        this.region = region;
     }
 
     public String getBucketName() {
@@ -41,5 +43,6 @@ public class S3CredentialsData {
     public String getSecretKey() {
         return this.secretKey;
     }
+    public String getRegion() { return this.region; }
 
 }
