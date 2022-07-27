@@ -16,6 +16,7 @@
 -- specific language governing permissions and limitations
 -- under the License.
 --
+ALTER TABLE m_savings_account_transaction DROP IF EXISTS ref_no;
 
 ALTER TABLE `m_savings_account_transaction` ADD COLUMN `ref_no` VARCHAR(128) DEFAULT NULL;
 
