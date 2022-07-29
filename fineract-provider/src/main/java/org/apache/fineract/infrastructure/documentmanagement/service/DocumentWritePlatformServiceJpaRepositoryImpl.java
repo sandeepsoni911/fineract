@@ -51,7 +51,7 @@ public class DocumentWritePlatformServiceJpaRepositoryImpl implements DocumentWr
 
     @Autowired
     public DocumentWritePlatformServiceJpaRepositoryImpl(final PlatformSecurityContext context, final DocumentRepository documentRepository,
-            final ContentRepositoryFactory documentStoreFactory) {
+             final ContentRepositoryFactory documentStoreFactory) {
         this.context = context;
         this.documentRepository = documentRepository;
         this.contentRepositoryFactory = documentStoreFactory;
@@ -61,6 +61,8 @@ public class DocumentWritePlatformServiceJpaRepositoryImpl implements DocumentWr
     @Override
     public Long createDocument(final DocumentCommand documentCommand, final InputStream inputStream) {
         try {
+            LOG.error("Creating document");
+
             this.context.authenticatedUser();
 
             final DocumentCommandValidator validator = new DocumentCommandValidator(documentCommand);
@@ -68,15 +70,14 @@ public class DocumentWritePlatformServiceJpaRepositoryImpl implements DocumentWr
             validateParentEntityType(documentCommand);
 
             validator.validateForCreate();
-
+            LOG.error("getting repository\n\n");
             final ContentRepository contentRepository = this.contentRepositoryFactory.getRepository();
-
             final String fileLocation = contentRepository.saveFile(inputStream, documentCommand);
-
+            LOG.error("creating document\n\n");
             final Document document = Document.createNew(documentCommand.getParentEntityType(), documentCommand.getParentEntityId(),
                     documentCommand.getName(), documentCommand.getFileName(), documentCommand.getSize(), documentCommand.getType(),
                     documentCommand.getDescription(), fileLocation, contentRepository.getStorageType());
-
+            LOG.error("saving document\n\n");
             this.documentRepository.save(document);
 
             return document.getId();
@@ -90,7 +91,7 @@ public class DocumentWritePlatformServiceJpaRepositoryImpl implements DocumentWr
     @Transactional
     @Override
     public Long createInternalDocument(final String entityType, final Long entityId, final Long fileSize, final InputStream inputStream,
-            final String mimeType, final String name, final String description, final String fileName) {
+           final String mimeType, final String name, final String description, final String fileName) {
 
         final DocumentCommand documentCommand = new DocumentCommand(null, null, entityType, entityId, name, fileName, fileSize, mimeType,
                 description, null);
